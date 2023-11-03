@@ -1,18 +1,22 @@
 package com.pjh.board.Entity.User.dto;
 
 import com.pjh.board.Entity.User.User;
-import jakarta.persistence.PrePersist;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
-
+@Getter
+@Setter
 public class UserUpdateDto {
-    private String title;
-    private String contents;
+    private String updateTitle;
+    private String updateContents;
 
-    public User toEntity(){
+    public User toEntity() {
         return User.builder()
-                .title(title)
-                .contents(contents)
+                .title(updateTitle)
+                .contents(updateContents)
                 .build();
     }
+
+    // Getter 및 Setter 메소드
+    // dto getter,setter필요함.
 }

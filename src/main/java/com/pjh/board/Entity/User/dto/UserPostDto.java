@@ -2,8 +2,10 @@ package com.pjh.board.Entity.User.dto;
 
 import com.pjh.board.Entity.User.User;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class UserPostDto {
     private int id;
     private String title;
