@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang = "en">
+<head>
+    <meta http-equiv="contentType" content="text/html" charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>
+        spring 웹 게시판사이트
+    </title>
+    <style>
+        .card {
+            margin: 5px; /* 카드 간격 */
+            border: 1px solid #e5e5e5; /* 카드 테두리 스타일 */
+        }
+
+        .btn-group {
+            margin-top: 10px; /* 버튼 그룹과 카드 간격 */
+        }
+    </style>
+</head>
+<script>
+    /*$('#postModal').on('show.bs.modal', function (e) {
+        console.log('Modal is opening');
+    });
+    $('#postModal').on('hidden.bs.modal', function (e) {
+        console.log('Modal is closing');
+    });*/
+
+    function submitForm() {
+        console.log("submitForm first time!");
+        var data = {
+            title: $('#title').val(),
+            username: $('#username').val(),
+            password: $('#password').val(),
+            contents: $('#contents').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/user',
+            contentType: 'application/json',
+            data: JSON.stringify(data)
+        }).done(res => {
+            alert("게시글 등록에 성공하셨습니다.");
+            window.location.reload();
+            $('#postModal').modal('hide');
+        }).fail(err=> {
+            console.error('Error:', err);
+        });
+    }
+    function openDetailsModal(userId) {
+        console.log("openDetailsModal method start!");
+
+        console.log("userId : ", userId);
+        $('#detailsModal').modal('show');
+        // AJAX를 사용하여 서버에서 데이터 가져오기
+        $.ajax({
+            type: 'GET',
+            url: `/api/user/${userId}`,
+            contentType: 'application/json',
+            success: function (user) {
+                // 모달 내용 업데이트
+                $('#modalTitle').text(user.title);
+                $('#modalUsername').text(user.username);
+                $('#modalContents').text(user.contents);
+                //$('#modalCreatedDate').text(user.createdDate);
+                // 모달 열기
+                // $('#detailsModal').modal('show');
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+    function openUpdateModal(userId) {
+        $('#updateModal').modal('show');
+        console.log("openUpdateModal method start!");
+        //updateModal(userId);
+        let data = {
+            'updateTitle' : updateTitle,
+            'updateContents': updateContents
+        };
+
+        console.log("userId : ", userId);
+
+        $('#updateModal').modal('show');
+        // AJAX를 사용하여 서버에서 데이터 가져오기
+        $.ajax({
+            type: 'PUT',
+            url: `/api/user/${userId}`,
+            contentType: 'application/json',
+            data: JSON.stringify(data)
+        }).done(res => {
+            console.log(res);
+        }).fail(err => {
+            console.log(err);
+        });
+    }
+</script>
+<body>
+<div th:replace="layout/header :: header"></div>
+<div class="container">
+    <div class="btn-group">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postModal" data-whatever="@mdo">게시글 작성하기</button>
+        <!-- modal을 통하여 form을 만들고 form을 통해 글을 게시함.-->
+    </div>
+    <div class="container">
+        <div class="card-columns">
+            <div th:each="user : ${boardList}">
+                <div class="card">
+                    <div class="card-body">
+                        <p>게시 번호 : <span th:text="${user.id}" id="userId"></span></p>
+                        <p>Title : <span th:text="${user.title}"></span></p>
+                        <!--<p>Contents : <span th:text="${user.contents}"></span></p>-->
+                        <p>Username : <span th:text="${user.username}"></span></p>
+                        <button th:onclick="openDetailsModal([[${user.id}]])">Details</button>
+                        <button th:onclick="openUpdateModal([[${user.id}]])">Update</button>
+                        <!--주석에 대괄호 두개쓰면 오류남...-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="postForm" method="post" action="/api/user">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">게시판 글 게시하기</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="title" class="col-form-label" >Title :</label>
+                        <input type="text" class="form-control" id="title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="col-form-label">Username :</label>
+                        <input type="text" class="form-control" id="username" name="username" autocomplete="username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="col-form-label">Password:</label>
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="contents" class="col-form-label">Contents:</label>
+                        <textarea class="form-control" id="contents"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="submitForm()">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="detailsModalLabel">Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="title" class="col-form-label" >Title :</label>
+                    <span id="modalTitle"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="col-form-label">Username :</label>
+                    <span id="modalUsername"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="contents" class="col-form-label">Contents:</label>
+                    <span id="modalContents"></span>
+                </div>
+                <!--<div class="mb-3">쓰질
+                    <label for="createDate" class="col-form-label">CreateDate:</label>
+                    <span id="modalCreateDate"></span>
+                </div>-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="updateModalLabel">Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="updateTitle" class="col-form-label" >Title :</label>
+                    <input type="text" class="form-control" id="updateTitle">
+                    <span id="modalUpdateTitle"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="updateContents" class="col-form-label">Contents:</label>
+                    <input type="text" class="form-control" id="updateContents">
+                    <span id="modalUpdateContents"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="layout/footer :: footer"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<!--<script src="/js/index.js"></script>-->
+</body>
+</html>
