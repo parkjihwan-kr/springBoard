@@ -41,11 +41,17 @@ function openDetailsModal(userId) {
         $('#modalTitle').text(user.title);
         $('#modalUsername').text(user.username);
         $('#modalContents').text(user.contents);
+
+        // createdDate를 형식화하여 표시
+        var createdDate = new Date(user.createdDate);
+        var formattedDate = createdDate.toLocaleString(); // 더 적절한 형식으로 변환할 수 있습니다.
+        $('#modalCreateDate').text(formattedDate);
     }).fail(function(xhr, status, error) {
         // 오류 시 처리
         console.error('Error:', error);
     });
 }
+
 function openUpdateModal(userId) {
     updateUserId = userId; // userId를 변수에 저장
     console.log("updateUserId : ",updateUserId);
@@ -55,28 +61,40 @@ function updateModal() {
     console.log("userId: ", updateUserId);
 
     let updateTitleValue = $('#updateTitle').val();
+    let updateUsernameValue = $('#updateUsername').val();
+    let updatePasswordValue = $('#updatePassword').val();
     let updateContentsValue = $('#updateContents').val();
+
     console.log("updateTitle: ", updateTitleValue);
+    console.log("updateUsername: ", updateUsernameValue);
+    console.log("updatePassword: ",updatePasswordValue);
     console.log("updateContents: ", updateContentsValue);
 
+    // 현재 시간을 생성
+    let currentTime = new Date();
+
     let data = {
+        updateUsername: updateUsernameValue,
+        updatePassword : updatePasswordValue,
         updateTitle: updateTitleValue,
-        updateContents: updateContentsValue
+        updateContents: updateContentsValue,
+        createdDate: currentTime.toISOString() // 현재 시간을 ISO 문자열로 변환
     };
+
     console.log(JSON.stringify(data));
     $.ajax({
         type: 'PUT',
-        url: `/api/user/${updateUserId}`, // 저장한 userId 사용
+        url: `/api/user/${updateUserId}`,
         contentType: 'application/json',
         data: JSON.stringify(data)
     }).done(res => {
-        //console.log(res);
         $('#updateModal').modal('hide');
         window.location.reload();
     }).fail(err => {
         console.log(err);
     });
 }
+
 function openDeleteModal(userId){
     deleteUserId = userId; // userId를 변수에 저장
     console.log("deleteUserId : ",deleteUserId);
@@ -103,7 +121,7 @@ function deleteModal(){
         console.log(res);
         window.location.reload();
     }).fail(err => {
-        alert("요청에 실패했습니다!");
+
         console.log(err);
     });
 }

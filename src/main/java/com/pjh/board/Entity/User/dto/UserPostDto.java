@@ -7,16 +7,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserPostDto {
-    private int id;
     private String title;
     private String password;
     private String username;
     private String contents;
-    private String createdDate;
 
     public User toEntity(){
         return User.builder()
-                .id(id)
                 .title(title)
                 .contents(contents)
                 .username(username)

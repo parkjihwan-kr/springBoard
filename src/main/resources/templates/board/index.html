@@ -27,7 +27,8 @@
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postModal" data-whatever="@mdo">게시글 작성하기</button>
         <!-- modal을 통하여 form을 만들고 form을 통해 글을 게시함.-->
     </div>
-    <!--<div th:if="${message}" th:utext="${message}" class="alert alert-info">
+    <!--<div th:if="${message}" class="alert alert-info">
+        <p th:text="${message}"></p>
     </div>-->
     <div class="container">
         <div class="card-columns">
@@ -37,7 +38,7 @@
                         <p>게시 번호 : <span th:text="${user.id}" id="userId"></span></p>
                         <p>Title : <span th:text="${user.title}"></span></p>
                         <!--<p>Contents : <span th:text="${user.contents}"></span></p>-->
-                        <p>Username : <span th:text="${user.username}"></span></p>
+                        <p>Contents : <span th:text="${user.contents}"></span></p>
                         <button th:onclick="openDetailsModal([[${user.id}]])">Details</button>
                         <button th:onclick="openUpdateModal([[${user.id}]])">Update</button>
                         <button th:onclick="openDeleteModal([[${user.id}]])">Delete</button>
@@ -59,16 +60,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="title" class="col-form-label" >Title :</label>
-                        <input type="text" class="form-control" id="title">
-                    </div>
-                    <div class="mb-3">
                         <label for="username" class="col-form-label">Username :</label>
                         <input type="text" class="form-control" id="username" name="username" autocomplete="username">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="col-form-label">Password:</label>
                         <input type="password" class="form-control" id="password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="title" class="col-form-label" >Title :</label>
+                        <input type="text" class="form-control" id="title">
                     </div>
                     <div class="mb-3">
                         <label for="contents" class="col-form-label">Contents:</label>
@@ -92,21 +93,22 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="title" class="col-form-label" >Title :</label>
-                    <span id="modalTitle"></span>
-                </div>
-                <div class="mb-3">
                     <label for="username" class="col-form-label">Username :</label>
                     <span id="modalUsername"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="contents" class="col-form-label">Contents:</label>
+                    <label for="title" class="col-form-label" >Title :</label>
+                    <span id="modalTitle"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="contents" class="col-form-label">Contents :</label>
                     <span id="modalContents"></span>
                 </div>
-                <!--<div class="mb-3">쓰질
+                <div class="mb-3">
                     <label for="createDate" class="col-form-label">CreateDate:</label>
                     <span id="modalCreateDate"></span>
-                </div>-->
+                    <!--createDate 오류 아님-->
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -118,10 +120,18 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="updateModalLabel">Details</h1>
+                <h1 class="modal-title fs-5" id="updateModalLabel">Update</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div class="mb-3">
+                    <label for="updateUsername" class="col-form-label">Username :</label>
+                    <input type="text" class="form-control" id="updateUsername">
+                </div>
+                <div class="mb-3">
+                    <label for="updatePassword" class="col-form-label">Password :</label>
+                    <input type="password" class="form-control" id="updatePassword" placeholder="If your password doesn't match, the post won't be modified.">
+                </div>
                 <div class="mb-3">
                     <label for="updateTitle" class="col-form-label">Title:</label>
                     <input type="text" class="form-control" id="updateTitle">
@@ -130,6 +140,7 @@
                     <label for="updateContents" class="col-form-label">Contents:</label>
                     <input type="text" class="form-control" id="updateContents">
                 </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

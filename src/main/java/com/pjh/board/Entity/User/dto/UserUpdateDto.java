@@ -8,10 +8,14 @@ import lombok.Setter;
 @Setter
 public class UserUpdateDto {
     private String updateTitle;
+    private String updatePassword;
+    private String updateUsername;
     private String updateContents;
 
     public User toEntity() {
         return User.builder()
+                .username(updateUsername)
+                .password(updatePassword)
                 .title(updateTitle)
                 .contents(updateContents)
                 .build();
