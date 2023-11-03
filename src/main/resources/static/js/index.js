@@ -72,7 +72,7 @@ function updateModal() {
 
     // 현재 시간을 생성
     let currentTime = new Date();
-
+    // test
     let data = {
         updateUsername: updateUsernameValue,
         updatePassword : updatePasswordValue,
