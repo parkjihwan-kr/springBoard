@@ -23,7 +23,7 @@ function submitForm() {
         window.location.reload();
         $('#postModal').modal('hide');
     }).fail(err=> {
-        console.error('Error:', err);
+        console.log(err);
     });
 }
 function openDetailsModal(userId) {
@@ -48,7 +48,7 @@ function openDetailsModal(userId) {
         $('#modalCreateDate').text(formattedDate);
     }).fail(function(xhr, status, error) {
         // 오류 시 처리
-        console.error('Error:', error);
+        console.log(err);
     });
 }
 
@@ -91,7 +91,7 @@ function updateModal() {
         $('#updateModal').modal('hide');
         window.location.reload();
     }).fail(err => {
-        console.log(err);
+        alert("회원 수정에 실패하셨습니다. 비밀번호를 확인해주세요!");
     });
 }
 
@@ -121,7 +121,6 @@ function deleteModal(){
         console.log(res);
         window.location.reload();
     }).fail(err => {
-
-        console.log(err);
+        alert("게시글 삭제에 실패하셨습니다. 비밀번호를 확인해주세요!");
     });
 }

@@ -51,13 +51,15 @@ public class UserService {
 
     @Transactional
     public User 게시글수정(int id, User user){
+
         User userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new ApiRequestException("게시글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
+
+        //System.out.println("userEntity.getPassword()"+userEntity.getPassword()+" user.getPassword() : "+user.getPassword());
 
         if (!userEntity.getPassword().equals(user.getPassword())) {
             throw new ApiRequestException("비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED);
         }
-
         userEntity.setTitle(user.getTitle());
         userEntity.setContents(user.getContents());
         user.setCreatedDate(user.getCreatedDate());
