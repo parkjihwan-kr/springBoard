@@ -1,19 +1,19 @@
-package com.pjh.board.Entity.User.dto;
+package com.pjh.board.Entity.Board.dto;
 
-import com.pjh.board.Entity.User.User;
+import com.pjh.board.Entity.Board.Board;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserUpdateDto {
+public class BoardUpdateDto {
     private String updateTitle;
     private String updatePassword;
     private String updateUsername;
     private String updateContents;
 
-    public User toEntity() {
-        return User.builder()
+    public Board toEntity() {
+        return Board.builder()
                 .username(updateUsername)
                 .password(updatePassword)
                 .title(updateTitle)

@@ -1,19 +1,19 @@
-package com.pjh.board.Entity.User.dto;
+package com.pjh.board.Entity.Board.dto;
 
-import com.pjh.board.Entity.User.User;
+import com.pjh.board.Entity.Board.Board;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserPostDto {
+public class BoardPostDto {
     private String title;
     private String password;
     private String username;
     private String contents;
 
-    public User toEntity(){
-        return User.builder()
+    public Board toEntity(){
+        return Board.builder()
                 .title(title)
                 .contents(contents)
                 .username(username)

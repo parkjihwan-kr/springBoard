@@ -1,7 +1,7 @@
 package com.pjh.board.controller;
 
-import com.pjh.board.Entity.User.User;
-import com.pjh.board.service.UserService;
+import com.pjh.board.Entity.Board.Board;
+import com.pjh.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +13,12 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    private final UserService userService;
+    private final BoardService userService;
     //private final BoardService boardService;
 
     @GetMapping({"/","/board/index"})
     public String showMainPage(Model model){
-        List<User> boardList = userService.게시판모든리스트조회();
+        List<Board> boardList = userService.게시판모든리스트조회();
         model.addAttribute("boardList", boardList);
         return "board/index";
     }

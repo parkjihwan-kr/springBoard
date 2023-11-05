@@ -1,44 +1,43 @@
 package com.pjh.board.controller.apiController;
 
 
-import com.pjh.board.Entity.User.User;
-import com.pjh.board.Entity.User.dto.UserDeleteDto;
-import com.pjh.board.Entity.User.dto.UserPostDto;
-import com.pjh.board.Entity.User.dto.UserUpdateDto;
-import com.pjh.board.service.UserService;
+import com.pjh.board.Entity.Board.Board;
+import com.pjh.board.Entity.Board.dto.BoardDeleteDto;
+import com.pjh.board.Entity.Board.dto.BoardPostDto;
+import com.pjh.board.Entity.Board.dto.BoardUpdateDto;
+import com.pjh.board.service.BoardService;
 import com.pjh.board.util.ApiRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class UserApiController {
+public class BoardApiController {
 
-    private final UserService userService;
+    private final BoardService boardService;
 
     @PostMapping("/user")
-    public String writePost(@RequestBody UserPostDto userPostDto) {
-        User user = userService.게시글작성(userPostDto.toEntity());
+    public String writePost(@RequestBody BoardPostDto userPostDto) {
+        Board board = boardService.게시글작성(userPostDto.toEntity());
         return "redirect:/";
     }
 
     @GetMapping("/user/{id}")
     //@ResponseBody
-    public User showDetails(@PathVariable int id){
-        return userService.게시글조회(id);
+    public Board showDetails(@PathVariable int id){
+        return boardService.게시글조회(id);
     }
 
     @PutMapping("/user/{id}")
     //@ResponseBody
     public ResponseEntity<?> updatePost(
             @PathVariable int id,
-            @RequestBody UserUpdateDto userUpdateDto){
+            @RequestBody BoardUpdateDto boardUpdateDto){
         try {
-            User updatedUser = userService.게시글수정(id, userUpdateDto.toEntity());
+            Board updatedUser = boardService.게시글수정(id, boardUpdateDto.toEntity());
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } catch (ApiRequestException ex) {
             return new ResponseEntity<>(ex.getMessage(), ex.getHttpStatus());
@@ -48,9 +47,9 @@ public class UserApiController {
     @DeleteMapping("/user/{id}")
     public ResponseEntity<?> deletePost(
             @PathVariable int id,
-            @RequestBody UserDeleteDto userDeleteDto){
+            @RequestBody BoardDeleteDto boardDeleteDto){
         try {
-            userService.게시글삭제(userDeleteDto.toEntity(), id);
+            boardService.게시글삭제(boardDeleteDto.toEntity(), id);
             return new ResponseEntity<>("게시물이 성공적으로 삭제되었습니다.", HttpStatus.OK);
         } catch (ApiRequestException ex) {
             return new ResponseEntity<>(ex.getMessage(), ex.getHttpStatus());
