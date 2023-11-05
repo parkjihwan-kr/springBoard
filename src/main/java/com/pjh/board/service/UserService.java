@@ -45,6 +45,7 @@ public class UserService {
 
     @Transactional
     public User 게시글조회(int id){
+
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 게시글을 찾을 수 없습니다: " + id));
     }

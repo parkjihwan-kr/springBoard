@@ -1,16 +1,35 @@
-/*추후 작성 예정*/
 $(document).ready(function() {
     $('#updateButton').on('click', updateModal);
     $('#deleteButton').on('click', deleteModal);
+    // 해당 버튼 클릭시 모달을 열어줍니다.
 });
-
+// contents는 null일 수 있게 설계 되었습니다.
 function submitForm() {
-    console.log("submitForm first time!");
+    // console.log("submitForm first time!");
+    // 게시글 작성에 대한 js
+    var title = $('#title').val();
+    var username = $('#username').val();
+    var password = $('#password').val();
+    var contents = $('#contents').val();
+
+    if(!title){
+        alert("Title을 입력해주세요.");
+        return;
+    }
+    if(!username){
+        alert("Username을 입력해주세요.");
+        return;
+    }
+    if(!password){
+        alert("Password을 입력해주세요.");
+        return;
+    }
+    // contents는 생략 가능하게 만듦.
     var data = {
-        title: $('#title').val(),
-        username: $('#username').val(),
-        password: $('#password').val(),
-        contents: $('#contents').val()
+        title: title,
+        username: username,
+        password: password,
+        contents: contents
     };
 
     $.ajax({
@@ -27,6 +46,7 @@ function submitForm() {
     });
 }
 function openDetailsModal(userId) {
+    // 해당 게시글에 대한 상세보기 js
     console.log("openDetailsModal method start!");
 
     console.log("userId : ", userId);
@@ -53,23 +73,37 @@ function openDetailsModal(userId) {
 }
 
 function openUpdateModal(userId) {
+    // 해당 게시글의 수정 모달 열기 js
     updateUserId = userId; // userId를 변수에 저장
     console.log("updateUserId : ",updateUserId);
     $('#updateModal').modal('show');
 }
 function updateModal() {
+    // 해당 게시글의 수정 js
     console.log("userId: ", updateUserId);
 
     let updateTitleValue = $('#updateTitle').val();
     let updateUsernameValue = $('#updateUsername').val();
     let updatePasswordValue = $('#updatePassword').val();
     let updateContentsValue = $('#updateContents').val();
-
+    /*
     console.log("updateTitle: ", updateTitleValue);
     console.log("updateUsername: ", updateUsernameValue);
     console.log("updatePassword: ",updatePasswordValue);
     console.log("updateContents: ", updateContentsValue);
-
+*/
+    if(!updateUsernameValue){
+        alert("Username을 입력해주세요");
+        return;
+    }
+    if(!updatePasswordValue){
+        alert("Password를 입력해주세요");
+        return;
+    }
+    if(!updateTitleValue){
+        alert("Title를 입력해주세요");
+        return;
+    }
     // 현재 시간을 생성
     let currentTime = new Date();
     // test
@@ -96,16 +130,22 @@ function updateModal() {
 }
 
 function openDeleteModal(userId){
+    // 해당 게시글의 삭제 모달 열기 js
     deleteUserId = userId; // userId를 변수에 저장
     console.log("deleteUserId : ",deleteUserId);
     $('#deleteModal').modal('show');
 }
 function deleteModal(){
+    // 해당 게시글의 삭제 js
     console.log("deleteId?: ", deleteUserId);
 
     let deletePassword = $('#deletePassword').val();
 
     console.log("deletePassword: ", deletePassword);
+    if(!deletePassword){
+        alert("Password를 입력해주세요!");
+        return;
+    }
 
     let data = {
         deletePassword: deletePassword

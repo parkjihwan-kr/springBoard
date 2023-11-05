@@ -27,14 +27,14 @@ public class UserApiController {
     }
 
     @GetMapping("/user/{id}")
-    @ResponseBody
+    //@ResponseBody
     public User showDetails(@PathVariable int id){
         return userService.게시글조회(id);
     }
 
     @PutMapping("/user/{id}")
-    @ResponseBody
-    public ResponseEntity<?> showUpdateDetails(
+    //@ResponseBody
+    public ResponseEntity<?> updatePost(
             @PathVariable int id,
             @RequestBody UserUpdateDto userUpdateDto){
         try {
@@ -46,7 +46,7 @@ public class UserApiController {
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<?> showDeleteDetails(
+    public ResponseEntity<?> deletePost(
             @PathVariable int id,
             @RequestBody UserDeleteDto userDeleteDto){
         try {

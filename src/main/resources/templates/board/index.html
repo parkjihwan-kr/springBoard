@@ -27,10 +27,8 @@
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postModal" data-whatever="@mdo">게시글 작성하기</button>
         <!-- modal을 통하여 form을 만들고 form을 통해 글을 게시함.-->
     </div>
-    <!--<div th:if="${message}" class="alert alert-info">
-        <p th:text="${message}"></p>
-    </div>-->
     <div class="container">
+        <!--모든 카드리스트 조회-->
         <div class="card-columns">
             <div th:each="user : ${boardList}">
                 <div class="card">
@@ -40,8 +38,11 @@
                         <!--<p>Contents : <span th:text="${user.contents}"></span></p>-->
                         <p>Contents : <span th:text="${user.contents}"></span></p>
                         <button th:onclick="openDetailsModal([[${user.id}]])">Details</button>
+                        <!--해당 게시글에 대한 상세보기 모달 열기 버튼-->
                         <button th:onclick="openUpdateModal([[${user.id}]])">Update</button>
+                        <!--해당 게시글의 수정하기 모달 열기 버튼-->
                         <button th:onclick="openDeleteModal([[${user.id}]])">Delete</button>
+                        <!--해당 게시글 삭제하기 모달 버튼-->
                         <!--주석에 대괄호 두개쓰면 오류남...-->
                     </div>
                 </div>
@@ -50,6 +51,7 @@
     </div>
 </div>
 
+<!--게시판 글 작성하기 모달-->
 <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -61,15 +63,15 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="username" class="col-form-label">Username :</label>
-                        <input type="text" class="form-control" id="username" name="username" autocomplete="username">
+                        <input type="text" class="form-control" id="username" name="username" autocomplete="username" required/>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="col-form-label">Password:</label>
-                        <input type="password" class="form-control" id="password">
+                        <input type="password" class="form-control" id="password" required/>
                     </div>
                     <div class="mb-3">
                         <label for="title" class="col-form-label" >Title :</label>
-                        <input type="text" class="form-control" id="title">
+                        <input type="text" class="form-control" id="title" required/>
                     </div>
                     <div class="mb-3">
                         <label for="contents" class="col-form-label">Contents:</label>
@@ -79,11 +81,14 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" onclick="submitForm()">Post</button>
+                    <!--해당 버튼을 누를 시에 submitForm()을 통하여 ajax 통신을 해서 spring boot, db에 리스트를 저장-->
                 </div>
             </form>
         </div>
     </div>
 </div>
+<!--게시판 글 작성하기 모달 끝-->
+<!--게시판 글 상세보기 모달-->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -116,6 +121,8 @@
         </div>
     </div>
 </div>
+<!--게시판 글 상세보기 모달 끝-->
+<!--게시판 글 수정하기 모달-->
 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -126,29 +133,33 @@
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="updateUsername" class="col-form-label">Username :</label>
-                    <input type="text" class="form-control" id="updateUsername">
+                    <input type="text" class="form-control" id="updateUsername" required/>
                 </div>
                 <div class="mb-3">
                     <label for="updatePassword" class="col-form-label">Password :</label>
-                    <input type="password" class="form-control" id="updatePassword" placeholder="If your password doesn't match, the post won't be modified.">
+                    <input type="password" class="form-control" id="updatePassword" placeholder="If your password doesn't match, the post won't be modified." required/>
                 </div>
                 <div class="mb-3">
                     <label for="updateTitle" class="col-form-label">Title:</label>
-                    <input type="text" class="form-control" id="updateTitle">
+                    <input type="text" class="form-control" id="updateTitle" required/>
                 </div>
                 <div class="mb-3">
                     <label for="updateContents" class="col-form-label">Contents:</label>
-                    <input type="text" class="form-control" id="updateContents">
+                    <input type="text" class="form-control" id="updateContents" required/>
                 </div>
 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="updateButton">UpdatePosting</button>
+                <button type="button" class="btn btn-primary" id="updateButton">UpdatePost</button>
+                <!--입력을 한 후, 모달에서 비밀번호가 틀리면 오류, 비밀번호가 맞으면 입력 내용에 대하여 ajax통신으로
+                spring boot와 db에 해당하는 내역 수정-->
             </div>
         </div>
     </div>
 </div>
+<!--게시판 글 수정하기 모달 끝-->
+<!--게시판 글 삭제하기 모달-->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -160,18 +171,19 @@
                 <form>
                     <div class="mb-3">
                         <label for="deletePassword" class="col-form-label">Input your password :</label>
-                        <input type="password" class="form-control" id="deletePassword">
+                        <input type="password" class="form-control" id="deletePassword" required/>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="deleteButton">Delete</button>
+                <!--비밀번호 입력을 한 후, 모달에서 입력에 대한 정보를 ajax통신으로 spring boot, db에 있는지 확인 후 조치-->
             </div>
         </div>
     </div>
 </div>
-<div th:replace="layout/footer :: footer"></div>
+t<div th:replace="layout/footer :: footer"></div>
 <script th:src="@{/js/index.js}" type="text/javascript"></script>
 </body>
 </html>
